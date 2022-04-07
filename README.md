@@ -1,0 +1,1 @@
+Goal: a discord bot that checks uptimes on eso logs, for example aggregating crusher on several bosses
