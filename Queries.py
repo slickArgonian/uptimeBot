@@ -7,6 +7,7 @@ class Report:
         self.encounter_code = code
         self.client = client
         self.players = self.init_players()
+        self.bosses = self.init_bosses()
 
     def init_players(self):
         query = self.for_report("""masterData{
@@ -20,6 +21,23 @@ class Report:
         dic = {}
         for a in actors:
             dic[a["id"]] = a["displayName"]
+        return dic
+
+    def init_bosses(self):
+        # TODO this looks a lot like the init_players. find a way to find actors(type = "player" or type = " npc" and subtype = "boss")
+        query = self.for_report("""masterData{
+                                actors(type:"npc",subType:"Boss"){
+                                    id
+                                    type 
+                                    name
+                                    subType
+                                }}
+                                """)
+        res = self.client.get(query)
+        bosses = res["data"]["reportData"]["report"]["masterData"]["actors"]
+        dic = {}
+        for a in bosses:
+            dic[a["id"]] = a["name"]
         return dic
 
     def get_boss_fights(self):
