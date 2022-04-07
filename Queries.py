@@ -51,7 +51,6 @@ class Report:
             }
        """)
         res = self.client.get(query)
-        print(res)
         return res["data"]["reportData"]["report"]["fights"]
 
     def get_buff_events(self, fight, ability):

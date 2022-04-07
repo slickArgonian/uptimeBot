@@ -15,7 +15,6 @@ class DebuffTracker:
         self.a = debuff_code
 
     def analyse(self, events):
-        print(events)
         # logique en plusieurs passes (pour chaque joueur)
         # puis en une seule passe (dicos)
         big_dic = {}
@@ -37,10 +36,4 @@ class DebuffTracker:
                     tracker[0] += (time - tracker[1])
                 tracker[1] = None
 
-        print(big_dic)
-
-
-if __name__ == "__main__":
-    from events import events
-    t = DebuffTracker("crusher code? we might not need it")
-    t.analyse(events)
+        return big_dic
