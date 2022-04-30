@@ -48,6 +48,8 @@ class Report:
                     endTime
                     name
                     kill
+                    difficulty
+                    fightPercentage
             }
        """)
         res = self.client.get(query)
