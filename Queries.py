@@ -60,11 +60,14 @@ class Report:
         return res["data"]["reportData"]["report"]["fights"]
 
     def get_buff_events(self, fight, ability):
-        s, e, i = fight["startTime"], fight["endTime"], fight["id"]
-        events = f"(dataType:Debuffs,startTime:{s},endTime:{e},fightIDs:{i},hostilityType:Enemies,abilityID:{ability})"
-        query = self.for_report("events" + events + "{data}")
-        res = self.client.get(query)
-        return res["data"]["reportData"]["report"]["events"]["data"]
+        start, e, i = fight["startTime"], fight["endTime"], fight["id"]
+        while start is not None:
+            events = f"(dataType:Debuffs,startTime:{start},endTime:{e},fightIDs:{i},hostilityType:Enemies,abilityID:{ability})"
+            query = self.for_report("events" + events + "{data nextPageTimestamp}")
+            res = self.client.get(query)
+            start = res["data"]["reportData"]["report"]["events"]["nextPageTimestamp"]
+            for event in res["data"]["reportData"]["report"]["events"]["data"]:
+                yield event
 
     def for_report(self, query):
         return """query{
