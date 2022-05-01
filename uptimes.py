@@ -18,8 +18,8 @@ def uptimes(report_code, user):
         # TODO in graphqlclient, throw the error message to pinpoint problem (existence, permission?)
         return f"Error ! The report {report_code} could not be reached, make sure the report exists and has Public or Unlisted visibility."
 
-    if "user with @ or without not" in "report":  # TODO write true code
-        return "user not in report"
+    if not(report.player_exists(user)):
+        return f"Error ! The user {user} does not appear in the report."
     fights = report.get_boss_fights()
 
     true_table = []

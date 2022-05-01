@@ -23,6 +23,10 @@ class Report:
             dic[a["id"]] = a["displayName"]
         return dic
 
+    def player_exists(self, player):
+        player = "@" + player if "@" not in player else player
+        return player in self.players.values()
+
     def init_bosses(self):
         # TODO this looks a lot like the init_players. find a way to find actors(type = "player" or type = " npc" and subtype = "boss")
         query = self.for_report("""masterData{
