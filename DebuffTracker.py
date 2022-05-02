@@ -1,39 +1,29 @@
 class DebuffTracker:
-    """
-    returns: total time each unit is affected by each player debuff
-    example
-                   arka        puppy
-    oax            30s         10s
-    havocrel1      10s         30s
-    frog1          1s          3s
+    def __init__(self, debuff_name):
+        self.debuff_name = debuff_name
 
-    => others=sum(havocrel and frog) = 11 et 33s
-    and then statistics wrt total fight time can be made
-    to be confirmed: a same target can't have two "crushers" for different players active at the same time
-    """
-    def __init__(self, debuff_code):
-        self.a = debuff_code
-
-    def analyse(self, events):
-        # logique en plusieurs passes (pour chaque joueur)
-        # puis en une seule passe (dicos)
-        big_dic = {}
+    def uptime_percent(self, events, fight, sourceId):
+        # able to track debuffs that can affect multiple targets
+        fightTime = fight["endTime"] - fight["startTime"]
+        targets = set()
+        total_time = [0, None]
         for event in events:
-            # TODO if abiilityGameId != debuff_code. check that graphql query works correctly?
-            source, target = event["sourceID"], event["targetID"]
+            source = event["sourceID"]
+            target = event["targetID"]
+            if source != sourceId:
+                continue
             type = event["type"]
             time = event["timestamp"]
-            if source not in big_dic:
-                big_dic[source] = {}
-            up_per_source = big_dic[source]
-            if target not in up_per_source:
-                up_per_source[target] = [0, None]
-            tracker = up_per_source[target]
             if type == "applydebuff":
-                tracker[1] = time
+                targets.add(target)
+                if len(targets) == 1:
+                    total_time[1] = time
             elif type == "removedebuff":
-                if tracker[1]:
-                    tracker[0] += (time - tracker[1])
-                tracker[1] = None
-
-        return big_dic
+                try:
+                    targets.remove(target)
+                except KeyError:  # Strange thing happening with multiple adds (example: coagulants in flagravn)
+                    print(event)
+                if len(targets) == 0 and total_time[1]:
+                    total_time[0] += (time - total_time[1])
+                    total_time[1] = None
+        return round(100 * total_time[0] / fightTime, 1)

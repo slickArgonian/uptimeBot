@@ -18,30 +18,25 @@ def uptimes(report_code, user):
         # TODO in graphqlclient, throw the error message to pinpoint problem (existence, permission?)
         return f"Error ! The report {report_code} could not be reached, make sure the report exists and has Public or Unlisted visibility."
 
-    if not(report.player_exists(user)):
+    userId = report.player_id(user)
+    if not userId:
         return f"Error ! The user {user} does not appear in the report."
     fights = report.get_boss_fights()
 
     true_table = []
+    # TODO: for crusher, also compute total uptime
+    headers = ["Encounter", "Crusher", "Alkosh", "Crystal weapon"]
+    debuffs = {"crusher": 17906, "alkosh": 76667, "crystal weapon": 143808}
     for fight in fights:
-        fightTime = fight["endTime"] - fight["startTime"]
-        ability_code = 17906
-        events = report.get_buff_events(fight, ability_code)
-        tracker = DebuffTracker("crushzrher")  # TODO smarten it
-        table = tracker.analyse(events)
-        format_table = {}
+        fight_name = get_fight_name(fight)
+        fight_stats = [fight_name]
+        print("Computing for fight", fight_name)
+        for debuffname, debuffcode in debuffs.items():
+            events = report.get_buff_events(fight, debuffcode)
+            tracker = DebuffTracker(debuffname)
+            fight_stats.append(tracker.uptime_percent(events, fight, userId))
+        true_table.append(fight_stats)
 
-        for player, uptimes in table.items():
-            new_up = {"others": 0}
-            for boss, boss_up in uptimes.items():
-                if boss in report.bosses:
-                    new_up[report.bosses[boss]] = boss_up[0] / fightTime
-                else:
-                    new_up["others"] += boss_up[0] / fightTime
-            format_table[report.players[player]] = new_up
-        true_table.append(
-            [get_fight_name(fight), round(100 * sum([v for _, v in format_table["@arkaell"].items()]), 1)])
-    headers = ["Encounter", "Crusher"]
     return tabulate(true_table, headers=headers)
 
 
