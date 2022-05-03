@@ -1,4 +1,4 @@
-from DebuffTracker import DebuffTracker
+from DebuffTracker import DebuffTracker, StaggerTracker
 from GraphQLClient import GraphQLClient
 from Queries import Report
 from tabulate import tabulate
@@ -13,22 +13,21 @@ with open("./credentials", "r") as f:
 from pathos.multiprocessing import ProcessingPool as Pool
 
 
-def process_fight(debuffs, report, userId):
+def process_fight(debuffs, report, userId, trackers):
     def process_inside(fight):
         fight_name = get_fight_name(fight)
         # prefix fight id number to sort back after
         fight_stats = [fight["id"], fight_name]
         print("Computing for fight", fight_name)
-        for debuffname, debuffcode in debuffs.items():
-            events = report.get_buff_events(fight, debuffcode)
-            tracker = DebuffTracker(debuffname)
+        for tracker in trackers:
+            events = report.get_buff_events(fight, tracker.debuff_code)
             fight_stats.append(tracker.uptime_percent(events, fight, userId))
         return fight_stats
 
     return process_inside
 
 
-def uptimes(report_code, user):
+def uptimes(report_code, user, parallel=True):
     try:
         report = Report(report_code, GraphQLClient("https://www.esologs.com/api/v2/client", client_id, client_secret))
     except:
@@ -42,13 +41,23 @@ def uptimes(report_code, user):
 
     true_table = []
     # TODO: for crusher, also compute total uptime
-    headers = ["Encounter", "Crusher", "Alkosh", "Crystal weapon"]
-    debuffs = {"crusher": 17906, "alkosh": 76667, "crystal weapon": 143808}
+    headers = ["Encounter", "Crusher", "Stagger (3)"]
+    debuffs = {"stagger": 134336}  # , "alkosh": 76667, "crystal weapon": 143808}
+    trackers = [
+        DebuffTracker("Crusher", 17906),
+        # DebuffTracker("Alkosh", 76667),
+        # DebuffTracker("Crystal Weapon", 143808),
+        StaggerTracker("Stagger", 134336)
+    ]
 
-    pool = Pool(len(fights))  # Create a multiprocessing Pool
-    total_successes = pool.map(process_fight(debuffs, report, userId), fights)
-    # sort back in case we lost order
-    sorting = sorted(total_successes, key=lambda x: x[0])
-    sorting = [x[1:] for x in sorting]
+    if parallel:
+        pool = Pool(len(fights))  # Create a multiprocessing Pool
+        total_successes = pool.map(process_fight(debuffs, report, userId, trackers), fights)
+        # sort back in case we lost order
+        sorting = sorted(total_successes, key=lambda x: x[0])
+        true_table = [x[1:] for x in sorting]
+    else:
+        for fight in fights:
+            true_table.append(process_fight(debuffs, report, userId, trackers)(fight)[1:])
 
-    return tabulate(sorting, headers=headers)
+    return tabulate(true_table, headers=headers)
