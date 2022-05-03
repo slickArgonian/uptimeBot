@@ -10,6 +10,23 @@ with open("./credentials", "r") as f:
     client_id = ls[0].strip()
     client_secret = ls[1].strip()
 
+from pathos.multiprocessing import ProcessingPool as Pool
+
+
+def process_fight(debuffs, report, userId):
+    def process_inside(fight):
+        fight_name = get_fight_name(fight)
+        # prefix fight id number to sort back after
+        fight_stats = [fight["id"], fight_name]
+        print("Computing for fight", fight_name)
+        for debuffname, debuffcode in debuffs.items():
+            events = report.get_buff_events(fight, debuffcode)
+            tracker = DebuffTracker(debuffname)
+            fight_stats.append(tracker.uptime_percent(events, fight, userId))
+        return fight_stats
+
+    return process_inside
+
 
 def uptimes(report_code, user):
     try:
@@ -27,16 +44,11 @@ def uptimes(report_code, user):
     # TODO: for crusher, also compute total uptime
     headers = ["Encounter", "Crusher", "Alkosh", "Crystal weapon"]
     debuffs = {"crusher": 17906, "alkosh": 76667, "crystal weapon": 143808}
-    for fight in fights:
-        fight_name = get_fight_name(fight)
-        fight_stats = [fight_name]
-        print("Computing for fight", fight_name)
-        for debuffname, debuffcode in debuffs.items():
-            events = report.get_buff_events(fight, debuffcode)
-            tracker = DebuffTracker(debuffname)
-            fight_stats.append(tracker.uptime_percent(events, fight, userId))
-        true_table.append(fight_stats)
 
-    return tabulate(true_table, headers=headers)
+    pool = Pool(len(fights))  # Create a multiprocessing Pool
+    total_successes = pool.map(process_fight(debuffs, report, userId), fights)
+    # sort back in case we lost order
+    sorting = sorted(total_successes, key=lambda x: x[0])
+    sorting = [x[1:] for x in sorting]
 
-
+    return tabulate(sorting, headers=headers)

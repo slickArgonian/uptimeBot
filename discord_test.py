@@ -36,4 +36,6 @@ async def on_message(message):
             await message.channel.send(f"```{res}```")
         # need to draw the different tables and format big dic
         # sea adder a boss? compare fight name to bosses name to separate boss and others?
-client.run(TOKEN)
+
+if __name__ == '__main__':
+    client.run(TOKEN)

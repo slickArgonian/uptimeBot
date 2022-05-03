@@ -13,4 +13,6 @@ hosting
 
 interactive? if not enough arguments, discord bot asks for report code, gets the answer, then asks for players, answer, buffs...
 
-parallelization on fights and/or debuffs and see if that speeds up
+parallelization debuffs inside already parallelized fights 
+
+buffs varying on fight: N/A on table
