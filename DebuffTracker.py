@@ -31,10 +31,16 @@ class DebuffTracker:
                 if len(targets) == 0 and total_time[1]:
                     total_time[0] += (time - total_time[1])
                     total_time[1] = None
-        return round(100 * total_time[0] / fightTime, 1)
+        res = round(100 * total_time[0] / fightTime, 1)
+        if res == 0:
+            return "N/A"
+        return res
 
 
 class StaggerTracker(DebuffTracker):
+
+    def __init__(self):
+        super().__init__("Stagger (3)", 134336)
 
     def debuff_active(self, event):
         return event["type"] == "applydebuffstack" and event["stack"] == 3

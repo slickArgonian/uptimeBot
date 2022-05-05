@@ -14,7 +14,7 @@ with open("./credentials", "r") as f:
 from pathos.multiprocessing import ProcessingPool as Pool
 
 
-def process_fight(debuffs, report, userId, trackers):
+def process_fight(trackers, report, userId):
     def process_inside(fight):
         fight_name = get_fight_name(fight)
         # prefix fight id number to sort back after
@@ -42,26 +42,18 @@ def uptimes(report_code, user, parallel=True):
 
     true_table = []
     # TODO: for crusher, also compute total uptime
-    headers = ["Encounter", "Crusher", "Stagger (3)"]
-    debuffs = {"stagger": 134336}  # , "alkosh": 76667, "crystal weapon": 143808}
 
-    # debuffs = get_debuffs(report, fights, userId)
-
-    trackers = [
-        DebuffTracker("Crusher", 17906),
-        # DebuffTracker("Alkosh", 76667),
-        # DebuffTracker("Crystal Weapon", 143808),
-        StaggerTracker("Stagger", 134336)
-    ]
+    trackers = get_debuffs(report, userId)
+    headers = ["Encounter"] + [d.debuff_name for d in trackers]
 
     if parallel:
         pool = Pool(len(fights))  # Create a multiprocessing Pool
-        total_successes = pool.map(process_fight(debuffs, report, userId, trackers), fights)
+        total_successes = pool.map(process_fight(trackers, report, userId), fights)
         # sort back in case we lost order
         sorting = sorted(total_successes, key=lambda x: x[0])
         true_table = [x[1:] for x in sorting]
     else:
         for fight in fights:
-            true_table.append(process_fight(debuffs, report, userId, trackers)(fight)[1:])
+            true_table.append(process_fight(trackers, report, userId)(fight)[1:])
 
     return tabulate(true_table, headers=headers)

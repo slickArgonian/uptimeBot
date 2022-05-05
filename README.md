@@ -5,13 +5,13 @@ smart identification of uptimes to check (ie check abilities and gear slotted an
 ## debuffs
 enchant:
 crusher 
-brittle (frost enchant or pulsar or destructive reach)
+brittle (frost enchant or pulsar or destructive reach) (full: in progress)
 
 skills:
 stagger 
 crystal weapon
-minor vuln (fetcher or totem or ambush nb)
-minor breach (potl)
+minor vuln (fetcher or totem or ambush nb) (in progres)
+minor breach (potl) (in progress)
 
 gear:
 alkosh
@@ -32,5 +32,3 @@ hosting
 interactive? if not enough arguments, discord bot asks for report code, gets the answer, then asks for players, answer, buffs...
 
 parallelization wrt debuffs or fights according to how many there are
-
-buffs varying on fight: N/A on table

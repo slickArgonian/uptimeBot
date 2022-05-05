@@ -70,16 +70,6 @@ class Report:
         res = self.client.get(query)
         return res["data"]["reportData"]["report"]["table"]["data"]["playerDetails"]
 
-    def get_player_gear(self, fights, playerid):
-        # per fight
-        query = f"events(startTime:0,endTime:4000000000," \
-                f"dataType:CombatantInfo," \
-                f"fightIDs:{fights}," \
-                f"sourceID:{playerid})" + "{data}"
-        query = self.for_report(query)
-        res = self.client.get(query)
-        return res["data"]["reportData"]["report"]["events"]["data"]
-
     def get_buff_events(self, fight, ability):
         start, e, i = fight["startTime"], fight["endTime"], fight["id"]
         while start is not None:
