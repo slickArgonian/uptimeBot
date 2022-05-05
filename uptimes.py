@@ -1,4 +1,5 @@
 from DebuffTracker import DebuffTracker, StaggerTracker
+from Debuffs import get_debuffs
 from GraphQLClient import GraphQLClient
 from Queries import Report
 from tabulate import tabulate
@@ -43,6 +44,9 @@ def uptimes(report_code, user, parallel=True):
     # TODO: for crusher, also compute total uptime
     headers = ["Encounter", "Crusher", "Stagger (3)"]
     debuffs = {"stagger": 134336}  # , "alkosh": 76667, "crystal weapon": 143808}
+
+    # debuffs = get_debuffs(report, fights, userId)
+
     trackers = [
         DebuffTracker("Crusher", 17906),
         # DebuffTracker("Alkosh", 76667),

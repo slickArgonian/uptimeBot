@@ -1,8 +1,26 @@
 Goal: a discord bot that checks uptimes on eso logs, for example aggregating crusher on several bosses
 
-### TODOs
-
 smart identification of uptimes to check (ie check abilities and gear slotted and compute uptimes for those abilities)
+
+## debuffs
+enchant:
+crusher 
+brittle (frost enchant or pulsar or destructive reach)
+
+skills:
+stagger 
+crystal weapon
+minor vuln (fetcher or totem or ambush nb)
+minor breach (potl)
+
+gear:
+alkosh
+crimson
+major vuln (tt)
+mk
+catalyst
+### TODOs
+extend to buffs (PA, empower...)
 
 extend to dd stuff
 
