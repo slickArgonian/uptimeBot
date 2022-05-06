@@ -1,34 +1,35 @@
-Goal: a discord bot that checks uptimes on eso logs, for example aggregating crusher on several bosses
+# UptimeBot
 
-smart identification of uptimes to check (ie check abilities and gear slotted and compute uptimes for those abilities)
+The goal of this project is to build a discord bot that is able to dynamically fetch data from esologs API, and provide a synthetic table of uptimes for a given report and player.
 
-## debuffs
-enchant:
-crusher 
-brittle (frost enchant or pulsar or destructive reach) (full: in progress)
+Currently, the bot focuses on uptimes provided by tank players and is limited to debuffs. It should not be too hard to cover buffs and more general roles.
 
-skills:
-stagger 
-crystal weapon
-minor vuln (fetcher or totem or ambush nb) (in progres)
-minor breach (potl) (in progress)
+To know which uptimes to compute, the bot checks the gear and the skills of the given player. Output is a table of those uptimes for each boss fight.
 
-gear:
-alkosh
-crimson
-major vuln (tt)
-mk
-catalyst
-### TODOs
-extend to buffs (PA, empower...)
+## Installation
 
-extend to dd stuff
+### Credentials
+As the bot is still a big WIP, I recommend creating your own discord bot to get your own token and use it to run the code of this repo. To create a bot, you can follow this [tutorial](https://realpython.com/how-to-make-a-discord-bot-python/). The minimal **permissions** needed are Read Messages and Send Messages. The token of the bot needs to be copied in a file named **discord_token**.
 
-compute all uptimes from one query of dataType:Debuffs and hostilityType:Enemies. in one go from events list
-we can't get all events because pagination will make computation too long. as we can't filter on several abilities, we will need one query per debuff
+To access esologs API, you need an account on the site and a client. The client can be created at <https://www.esologs.com/api/clients/>. More information on the API is available on the **Web API** section (bottom of the page at <https://www.esologs.com/profile>). 
 
-hosting
+Once you have the client_id and the client_secret, put them in a file called **credentials**, client_id on the first line and client_secret on the second line.
 
-interactive? if not enough arguments, discord bot asks for report code, gets the answer, then asks for players, answer, buffs...
+### Run
 
-parallelization wrt debuffs or fights according to how many there are
+Install python packages with the classic: `pip install -r requirements.txt`
+
+The code for the discord bot is in [discord_test](./discord_test.py). For debug purposes, you can use [main.py](./main.py).
+
+## Debuffs
+The list of supported debuffs is present in the [debuffs file](./Debuffs.py).
+
+##TODOs
+
+There are some TODOs already present in the code, they are minor modifications that can be done without too much trouble. Here is a list of bigger features to be explored:
+
+- extend to buffs (PA, empower...)
+- extend to dd and healer stuff
+- bot hosting
+- interactive bot. if not enough arguments given, discord bot asks for report code, gets the answer, then asks for players, answer, buffs...
+- smarter parallelization

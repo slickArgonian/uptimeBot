@@ -1,4 +1,3 @@
-from DebuffTracker import DebuffTracker, StaggerTracker
 from Debuffs import get_debuffs
 from GraphQLClient import GraphQLClient
 from Queries import Report

@@ -72,6 +72,7 @@ def get_debuffs(report, player):
                 Gear("Catalyst"): DebuffTracker("Frost W", 142652),
                 Gear("Martial Knowledge"): DebuffTracker("MK", 127070),
                 Enchant(28): DebuffTracker("Crusher", 17906),
+                #  TODO: more conditions for brittle: pulsar or destructive reach
                 Trait(23): DebuffTracker("mBrittle", 146697)  # 23: Charged
                 }
     for g in gear:
@@ -79,7 +80,10 @@ def get_debuffs(report, player):
             gb.update(g)
     debuffs = [d for g, d in gear_map.items() if g.equipped()]
     skill_map = {Skill(31816): StaggerTracker(),
-                 Skill(46331): DebuffTracker("Crystal Weapon", 143808)}
+                 Skill(46331): DebuffTracker("Crystal Weapon", 143808)
+                 # todo minor vuln (totem, flies, ambush)
+                 }
+
     for s in skills:
         for sb in skill_map:
             sb.update(s)
