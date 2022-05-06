@@ -20,7 +20,7 @@ def process_fight(trackers, report, userId):
         fight_stats = [fight["id"], fight_name]
         print("Computing for fight", fight_name)
         for tracker in trackers:
-            events = report.get_buff_events(fight, tracker.debuff_code)
+            events = report.get_debuff_events(fight, tracker.debuff_code)
             fight_stats.append(tracker.uptime_percent(events, fight, userId))
         return fight_stats
 
@@ -40,7 +40,6 @@ def uptimes(report_code, user, parallel=True):
     fights = report.get_boss_fights()
 
     true_table = []
-    # TODO: for crusher, also compute total uptime
 
     trackers = get_debuffs(report, userId)
     headers = ["Encounter"] + [d.debuff_name for d in trackers]

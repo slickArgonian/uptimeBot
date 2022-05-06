@@ -72,8 +72,8 @@ def get_debuffs(report, player):
                 Gear("Catalyst"): DebuffTracker("Frost W", 142652),
                 Gear("Martial Knowledge"): DebuffTracker("MK", 127070),
                 Enchant(28): DebuffTracker("Crusher", 17906),
-                #  TODO: more conditions for brittle: pulsar or destructive reach
-                Trait(23): DebuffTracker("mBrittle", 146697)  # 23: Charged
+                #  TODO: better conditions for brittle: charged on an ice staff, pulsar or destructive reach
+                # Trait(23): DebuffTracker("mBrittle", 146697)  # 23: Charged
                 }
     for g in gear:
         for gb in gear_map:

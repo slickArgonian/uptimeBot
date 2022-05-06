@@ -28,7 +28,7 @@ class Report:
     def player_id(self, player):
         player = "@" + player if "@" not in player else player
         for id, name in self.players.items():
-            if name == player:
+            if name.upper() == player.upper():
                 return id
         return None
 
@@ -70,7 +70,7 @@ class Report:
         res = self.client.get(query)
         return res["data"]["reportData"]["report"]["table"]["data"]["playerDetails"]
 
-    def get_buff_events(self, fight, ability):
+    def get_debuff_events(self, fight, ability):
         start, e, i = fight["startTime"], fight["endTime"], fight["id"]
         while start is not None:
             events = f"(dataType:Debuffs,startTime:{start},endTime:{e},fightIDs:{i},hostilityType:Enemies,abilityID:{ability})"
