@@ -8,8 +8,8 @@ class GraphQLClient:
         self.client_id = client_id
         self.client_secret = client_secret
         self.access_token = ""
-        if os.path.exists("./access_token"):
-            with open("./access_token", "r") as f:
+        if os.path.exists("../access_token"):
+            with open("../access_token", "r") as f:
                 self.access_token = f.readlines()[0].strip()
         else:
             self.generate_token()
@@ -35,7 +35,7 @@ class GraphQLClient:
         self.access_token = requests.post("https://www.esologs.com/oauth/token",
                                           auth=(self.client_id, self.client_secret),
                                           json={"grant_type": "client_credentials"}).json()["access_token"]
-        with open("./access_token", "w") as f:
+        with open("../access_token", "w") as f:
             print(self.access_token, file=f)
 
     def headers(self):

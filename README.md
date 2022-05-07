@@ -19,10 +19,13 @@ Once you have the client_id and the client_secret, put them in a file called **c
 
 Install python packages with the classic: `pip install -r requirements.txt`
 
-The code for the discord bot is in [discord_test](./discord_test.py). For debug purposes, you can use [main.py](./main.py).
+The code for the discord bot is in [discord_test](src/discord_test.py). For debug purposes, you can use [main.py](src/main.py).
 
 ## Debuffs
-The list of supported debuffs is present in the [debuffs file](./Debuffs.py).
+The list of supported debuffs is present in the [debuffs file](src/Debuffs.py).
+
+## Hosting
+I am using [Okteto](https://cloud.okteto.com) to deploy a locally built docker image in a kubernetes cluster. If you want to try it out, you can put all your tokens in the [config file](./k8s/values.test.yml).
 
 ## TODOs
 

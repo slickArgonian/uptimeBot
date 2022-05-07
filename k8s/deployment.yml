@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uptimebot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uptimebot
+  template:
+    metadata:
+      labels:
+        app: uptimebot
+    spec:
+      containers:
+      - image: ghcr.io/slickargonian/uptimebot:latest
+        name: uptimebot
+        imagePullPolicy: Always
+        envFrom:
+          - configMapRef:
+              name: tokens

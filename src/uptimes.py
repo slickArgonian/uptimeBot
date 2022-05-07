@@ -2,15 +2,19 @@ from Debuffs import get_debuffs
 from GraphQLClient import GraphQLClient
 from Queries import Report
 from tabulate import tabulate
-
-from utils import get_fight_name
-
-with open("./credentials", "r") as f:
-    ls = f.readlines()
-    client_id = ls[0].strip()
-    client_secret = ls[1].strip()
+import os
 
 from pathos.multiprocessing import ProcessingPool as Pool
+from utils import get_fight_name
+
+if "CLIENT_ID" in os.environ:
+    client_id = os.environ["CLIENT_ID"]
+    client_secret = os.environ["CLIENT_SECRET"]
+else:
+    with open("./credentials", "r") as f:
+        ls = f.readlines()
+        client_id = ls[0].strip()
+        client_secret = ls[1].strip()
 
 
 def process_fight(trackers, report, userId):
