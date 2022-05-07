@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: tokens
+data:
+  CLIENT_ID: <esologs_client_id_here>
+  CLIENT_SECRET: <esologs_client_secret_here>
+  DISCORD_TOKEN: <discord_bot_token_here>

@@ -1,8 +1,13 @@
+import os
+
 import discord
 from uptimes import uptimes
 
-with open("./discord_token", "r") as tk:
-    TOKEN = tk.readlines()[0].strip()
+if "DISCORD_TOKEN" in os.environ:
+    TOKEN = os.environ["DISCORD_TOKEN"]
+else:
+    with open("./discord_token", "r") as tk:
+        TOKEN = tk.readlines()[0].strip()
 
 client = discord.Client()
 
