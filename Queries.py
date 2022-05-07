@@ -65,7 +65,8 @@ class Report:
         return res["data"]["reportData"]["report"]["fights"]
 
     def get_players_info(self):
-        # sounds not possible by fight even if the website can
+        # we can get the player info by fight by selecting the correct start time and end time, but if we do we need
+        # to optimize the calls. TODO ?
         query = self.for_report("table(startTime:0, endTime:4000000000)")
         res = self.client.get(query)
         return res["data"]["reportData"]["report"]["table"]["data"]["playerDetails"]

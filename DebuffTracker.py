@@ -47,7 +47,7 @@ class DebuffTracker:
         else:
             second_term = round(100 * total_time[0] / fightTime, 1)
         res = round(100 * player_time[0] / fightTime, 1)
-        if res == 0 and second_term == 0:
+        if res == 0 and (not second_term or second_term == 0):
             return "N/A"
         elif res == 0 and second_term > 0:
             return f"N/A ({second_term})"

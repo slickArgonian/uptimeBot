@@ -24,7 +24,7 @@ The code for the discord bot is in [discord_test](./discord_test.py). For debug 
 ## Debuffs
 The list of supported debuffs is present in the [debuffs file](./Debuffs.py).
 
-##TODOs
+## TODOs
 
 There are some TODOs already present in the code, they are minor modifications that can be done without too much trouble. Here is a list of bigger features to be explored:
 

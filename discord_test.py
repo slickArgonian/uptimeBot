@@ -36,8 +36,8 @@ async def on_message(message):
             user = args[2]
             await message.channel.send("Computing uptimes for " + report_code + " and user " + user)
             res = uptimes(report_code, user)
-            await message.channel.send(f"```If a number is in parenthesis next to another number, it means the player "
-                                       f"was not the only one to provide the debuff. The parenthesis is the total uptime,"
+            await message.channel.send(f"```If a number is in parenthesis, it means the player was not the only one to "
+                                       "provide the debuff. The parenthesis is the total uptime,"
                                        f" coming from all players"
                                        f"\n\n{res}```")
         # need to draw the different tables and format big dic
