@@ -9,7 +9,8 @@ To know which uptimes to compute, the bot checks the gear and the skills of the 
 ## Overview
 This is an example of an use of the bot for two Kyne's Aegis runs of mine, with two different setups (sorc and dk tank).
 
-![image](https://user-images.githubusercontent.com/48063951/176684407-c0b29c5d-c0a4-45eb-ac2b-25d97e9311f9.png)
+![image](https://user-images.githubusercontent.com/48063951/176684714-f4e6da60-eb38-40dd-a10a-04f7f5f6baed.png)
+
 
 
 ## Installation
