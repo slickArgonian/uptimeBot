@@ -6,6 +6,12 @@ Currently, the bot focuses on uptimes provided by tank players and is limited to
 
 To know which uptimes to compute, the bot checks the gear and the skills of the given player. Output is a table of those uptimes for each boss fight.
 
+## Overview
+This is an example of an use of the bot for two Kyne's Aegis runs of mine, with two different setups (sorc and dk tank).
+
+![image](https://user-images.githubusercontent.com/48063951/176684407-c0b29c5d-c0a4-45eb-ac2b-25d97e9311f9.png)
+
+
 ## Installation
 
 ### Credentials
